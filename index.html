@@ -1,16 +1,154 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>^</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unicode</title>
+    <style>
+      /* General Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Body Styling */
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.8;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f7fa;
+        color: #333;
+        height: 100vh;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      /* Container Styling */
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+        padding: 0 10px;
+        width: 100%;
+        max-width: 1200px;
+        overflow: auto;
+        padding-bottom: 50px;
+      }
+
+      /* Character Box Styling */
+      .character-box {
+        background-color: #ffffff;
+        border: 1px solid #e1e4e8;
+        border-radius: 8px;
+        text-align: center;
+        padding: 15px;
+        width: 90px;
+        height: 90px;
+        font-size: 16px;
+        color: #333;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .character-box:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Smooth Scrollbar Styling */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 5px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+
+      /* Responsive Design for Mobile */
+      @media (max-width: 600px) {
+        .container {
+          flex-direction: column;
+          align-items: center;
+          padding: 0;
+        }
+
+        .character-box {
+          width: 70px;
+          height: 70px;
+        }
+      }
+    </style>
   </head>
   <body>
-    <script SameSite="None; Secure" type="module" src="https://cdn.landbot.io/landbot-3/landbot-3.0.0.mjs"></script>
-    <script type="module">
-      var myLandbot = new Landbot.Fullpage({
-        configUrl: 'https://storage.googleapis.com/landbot.site/v3/H-2741085-LCRBVHG7D39KRFQV/index.json',
-      });
+    <div class="container" id="unicode-container"></div>
+
+    <script>
+      const batchSize = 1000;
+      let currentStart = 0;
+      const container = document.getElementById('unicode-container');
+      let isLoading = false;
+      const seenChars = new Set(); // To store seen Unicode characters
+
+      function generateUnicodeBatch(start, size) {
+        if (isLoading) return;
+        isLoading = true;
+        for (let i = start; i < start + size && i <= 1114111; i++) {
+          const char = String.fromCodePoint(i);
+
+          // Skip if the character has already been added
+          if (seenChars.has(char)) continue;
+
+          seenChars.add(char); // Add the character to the seen set
+
+          const div = document.createElement('div');
+          div.className = 'character-box';
+          div.textContent = char;
+          container.appendChild(div);
+        }
+        isLoading = false;
+      }
+
+      function handleScroll() {
+        const scrollPosition = window.scrollY + window.innerHeight;
+        const bottomPosition = document.documentElement.scrollHeight;
+        if (scrollPosition >= bottomPosition - 500) {
+          currentStart += batchSize;
+          generateUnicodeBatch(currentStart, batchSize);
+        }
+      }
+
+      generateUnicodeBatch(currentStart, batchSize);
+
+      window.addEventListener('scroll', handleScroll);
+
+      function continueLoading() {
+        if (!isLoading) {
+          generateUnicodeBatch(currentStart, batchSize);
+          currentStart += batchSize;
+        }
+        requestAnimationFrame(continueLoading);
+      }
+
+      continueLoading();
     </script>
   </body>
 </html>
