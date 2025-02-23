@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox User ID Finder</title>
+    <script>
+        function getUserID() {
+            var username = document.getElementById("username").value;
+            var formData = new FormData();
+            formData.append("username", username);
+
+            fetch('/get_user_id', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerHTML = "User ID: " + data.user_id;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("result").innerHTML = "An error occurred while fetching the user ID.";
+            });
+        }
+    </script>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 50px;">
+        <h1>Roblox User ID Finder</h1>
+        <input type="text" id="username" placeholder="Enter Roblox username" style="padding: 10px;">
+        <button onclick="getUserID()" style="padding: 10px; margin-left: 10px;">Get User ID</button>
+        <div id="result" style="margin-top: 20px; font-size: 18px;"></div>
+    </div>
+</body>
+</html>
