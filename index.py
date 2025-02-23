@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import requests
+import os
 
 app = Flask(__name__)
 
@@ -31,6 +32,7 @@ def get_roblox_user_id(username):
 
 @app.route('/')
 def index():
+    # Serve the index.html file located in the same folder as the Python file
     return render_template('index.html')
 
 @app.route('/get_user_id', methods=['POST'])
