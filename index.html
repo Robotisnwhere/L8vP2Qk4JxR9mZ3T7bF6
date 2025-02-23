@@ -1,36 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html>
+  <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox User ID Finder</title>
-    <script>
-        function getUserID() {
-            var username = document.getElementById("username").value;
-            var formData = new FormData();
-            formData.append("username", username);
-
-            fetch('/get_user_id', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("result").innerHTML = "User ID: " + data.user_id;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById("result").innerHTML = "An error occurred while fetching the user ID.";
-            });
-        }
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>^</title>
+  </head>
+  <body>
+    <script SameSite="None; Secure" type="module" src="https://cdn.landbot.io/landbot-3/landbot-3.0.0.mjs"></script>
+    <script type="module">
+      var myLandbot = new Landbot.Fullpage({
+        configUrl: 'https://storage.googleapis.com/landbot.site/v3/H-2741085-LCRBVHG7D39KRFQV/index.json',
+      });
     </script>
-</head>
-<body>
-    <div style="text-align: center; margin-top: 50px;">
-        <h1>Roblox User ID Finder</h1>
-        <input type="text" id="username" placeholder="Enter Roblox username" style="padding: 10px;">
-        <button onclick="getUserID()" style="padding: 10px; margin-left: 10px;">Get User ID</button>
-        <div id="result" style="margin-top: 20px; font-size: 18px;"></div>
-    </div>
-</body>
+  </body>
 </html>
